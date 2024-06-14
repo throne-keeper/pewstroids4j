@@ -1,6 +1,7 @@
 package com.thronekeeper.fun.actor;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -16,7 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public abstract class BaseActor extends Group {
+public class BaseActor extends Group {
 
     private static Rectangle worldBounds;
 
@@ -98,6 +99,7 @@ public abstract class BaseActor extends Group {
                 textureRegions.add(new TextureRegion(texture));
             }
             this.animation = new Animation<>(duration, textureRegions, playMode);
+            setAnimation(this.animation);
         }
         return animation;
     }
@@ -169,8 +171,8 @@ public abstract class BaseActor extends Group {
         return velocityVector.len();
     }
 
-    public float setMotionAngle() {
-        return velocityVector.angleDeg();
+    public void setMotionAngle(float angle) {
+        velocityVector.setAngleDeg(angle);
     }
 
     public float getMotionAngle() {
@@ -213,9 +215,9 @@ public abstract class BaseActor extends Group {
         float h = getHeight();
         float[] vertices = new float[2 * numSides];
         for (int i = 0; i < numSides; i++) {
-            float angle = i * MathUtils.PI2 / numSides;
-            vertices[i*2] = w/2 * MathUtils.cos(angle) + w/2;
-            vertices[(i*2)+1] = h/2 * MathUtils.sin(angle) + h/2;
+            float angle = i * 6.28f / numSides;
+            vertices[2*i] = w/2 * MathUtils.cos(angle) + w/2;
+            vertices[2*i+1] = h/2 * MathUtils.sin(angle) + h/2;
         }
         boundary = new Polygon(vertices);
     }
@@ -229,7 +231,7 @@ public abstract class BaseActor extends Group {
     }
 
     public boolean overlaps(BaseActor other) {
-        Polygon me = this.boundary;
+        Polygon me = this.getBoundaryPolygon();
         Polygon them = other.getBoundaryPolygon();
         if (!me.getBoundingRectangle().overlaps(them.getBoundingRectangle())) {
             return false;
@@ -263,4 +265,5 @@ public abstract class BaseActor extends Group {
             setY(-getHeight());
         }
     }
+
 }
