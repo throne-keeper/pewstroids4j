@@ -2,13 +2,15 @@ package com.thronekeeper.fun.actor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class Spaceship extends BaseActor {
 
     private Thrusters thrusters;
-//    private Shield shield;
+    private Sound bzz;
+
+    private boolean bzzPlaying;
 
     public Spaceship(float x, float y, Stage stage) {
         super(x, y, stage);
@@ -18,6 +20,7 @@ public class Spaceship extends BaseActor {
         setMaxSpeed(100);
         setDeceleration(10);
         thrusters = new Thrusters(0, 0, stage);
+        bzz = Gdx.audio.newSound(Gdx.files.internal("audio/bzz.mp3"));
         addActor(thrusters);
         thrusters.setPosition(-thrusters.getWidth(), getHeight()/2 - thrusters.getHeight()/2);
     }
@@ -35,7 +38,14 @@ public class Spaceship extends BaseActor {
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
             accelerateAtAngle(getRotation());
             thrusters.setVisible(true);
+            if (!bzzPlaying) {
+                bzzPlaying = true;
+                var id = bzz.play();
+                bzz.setLooping(id, true);
+            }
         } else {
+            bzzPlaying = false;
+            bzz.stop();
             thrusters.setVisible(false);
         }
         applyPhysics(delta);

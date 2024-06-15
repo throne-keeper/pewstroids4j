@@ -1,9 +1,12 @@
 package com.thronekeeper.fun.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.thronekeeper.fun.actor.Asteroid;
 import com.thronekeeper.fun.actor.BaseActor;
 import com.thronekeeper.fun.actor.Beam;
+import com.thronekeeper.fun.actor.Explosion;
 import com.thronekeeper.fun.actor.Spaceship;
 
 public class LevelScreen extends BaseScreen {
@@ -11,10 +14,15 @@ public class LevelScreen extends BaseScreen {
     private Spaceship spaceship;
     private boolean gameOver;
 
+    private Sound pewSound;
+    private Sound bzz;
+    private Sound explode;
+
     @Override
     public void initialize() {
         BaseActor space = new BaseActor(0, 0, mainStage);
         space.setSize(800, 600);
+        space.loadTexture("space.jpg");
         BaseActor.setWorldBounds(space);
         spaceship = new Spaceship(400, 300, mainStage);
         new Asteroid(600, 500, mainStage);
@@ -22,19 +30,29 @@ public class LevelScreen extends BaseScreen {
         new Asteroid(300, 300, mainStage);
         new Asteroid(300, 600, mainStage);
         gameOver = false;
+        pewSound = Gdx.audio.newSound(Gdx.files.internal("audio/pew.mp3"));
+        bzz = Gdx.audio.newSound(Gdx.files.internal("audio/bzz.mp3"));
+        explode = Gdx.audio.newSound(Gdx.files.internal("audio/explode.mp3"));
     }
 
     @Override
     public void update(float delta) {
         for (BaseActor asteroid : BaseActor.getActors(mainStage, Asteroid.class)) {
             if (asteroid.overlaps(spaceship)) {
+                Explosion boom = new Explosion(0, 0, mainStage);
+                boom.centerAtActor(spaceship);
+                spaceship.remove();
+                spaceship.setPosition(-1000, -1000);
                 gameOver = true;
+                explode.play();
                 spaceship.remove();
                 System.out.println("YOU LOSE. YOU'RE A LOSER");
             }
             for (BaseActor beam : BaseActor.getActors(mainStage, Beam.class)) {
                 if (beam.overlaps(asteroid)) {
-                    // TODO EXPLOSIONS
+                    Explosion boom = new Explosion(0, 0, mainStage);
+                    explode.play();
+                    boom.centerAtActor(asteroid);
                     asteroid.remove();
                 }
             }
@@ -53,6 +71,7 @@ public class LevelScreen extends BaseScreen {
         }
         if (keycode == Input.Keys.SPACE) {
             spaceship.shoot();
+            pewSound.play();
         }
         return false;
     }

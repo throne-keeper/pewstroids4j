@@ -1,9 +1,12 @@
 package com.thronekeeper.fun.actor;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 public class Beam extends BaseActor {
+
 
     public Beam(float x, float y, Stage stage) {
         super(x, y, stage);
