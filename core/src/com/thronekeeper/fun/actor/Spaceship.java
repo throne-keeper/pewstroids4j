@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class Spaceship extends BaseActor {
 
-    private Thrusters thrusters;
-    private Sound bzz;
+    private final Thrusters thrusters;
+    private final Sound bzz;
 
     private boolean bzzPlaying;
 
