@@ -8,11 +8,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.thronekeeper.fun.actor.Asteroid;
-import com.thronekeeper.fun.actor.BaseActor;
-import com.thronekeeper.fun.actor.Beam;
-import com.thronekeeper.fun.actor.Explosion;
-import com.thronekeeper.fun.actor.Spaceship;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.thronekeeper.fun.actor.*;
+
+import java.sql.Time;
 
 public class LevelScreen extends BaseScreen {
 
@@ -25,6 +24,7 @@ public class LevelScreen extends BaseScreen {
 
     private boolean gameOver;
     private int score;
+    private long startTime;
 
     @Override
     public void initialize() {
@@ -43,6 +43,7 @@ public class LevelScreen extends BaseScreen {
         scoreLabel = initializeScoreLabel();
         uiStage.addActor(scoreLabel);
         score = 0;
+        startTime = TimeUtils.nanoTime();
     }
 
     private Label initializeScoreLabel() {
@@ -92,6 +93,13 @@ public class LevelScreen extends BaseScreen {
         if (!gameOver && BaseActor.getActors(mainStage, Asteroid.class).isEmpty()) {
             gameOver = true;
         }
+        if (!gameOver && BaseActor.getActors(mainStage, Saucer.class).isEmpty()) {
+            System.out.println("TimesinceMillis: " + TimeUtils.timeSinceNanos(startTime));
+            if (TimeUtils.timeSinceNanos(startTime) > 10_000_000_000L) {
+                new Saucer(0, mainStage.getHeight()-100, mainStage);
+            }
+        }
+
     }
 
     @Override
@@ -104,6 +112,11 @@ public class LevelScreen extends BaseScreen {
             pewSound.play();
         }
         return false;
+    }
+
+    public void sendInTheSaucer() {
+        Saucer saucer = new Saucer(0, mainStage.getHeight() -100, mainStage);
+
     }
 
     @Override
