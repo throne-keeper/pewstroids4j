@@ -13,6 +13,7 @@ import com.thronekeeper.fun.actor.*;
 
 import java.sql.Time;
 
+
 public class LevelScreen extends BaseScreen {
 
     private Spaceship spaceship;
@@ -25,6 +26,9 @@ public class LevelScreen extends BaseScreen {
     private boolean gameOver;
     private int score;
     private long startTime;
+    private Saucer saucer;
+
+    private long lastFireTime;
 
     @Override
     public void initialize() {
@@ -44,6 +48,7 @@ public class LevelScreen extends BaseScreen {
         uiStage.addActor(scoreLabel);
         score = 0;
         startTime = TimeUtils.nanoTime();
+        lastFireTime = TimeUtils.nanoTime();
     }
 
     private Label initializeScoreLabel() {
@@ -94,13 +99,18 @@ public class LevelScreen extends BaseScreen {
             gameOver = true;
         }
         if (!gameOver && BaseActor.getActors(mainStage, Saucer.class).isEmpty()) {
-            System.out.println("TimesinceMillis: " + TimeUtils.timeSinceNanos(startTime));
             if (TimeUtils.timeSinceNanos(startTime) > 10_000_000_000L) {
-                new Saucer(0, mainStage.getHeight()-100, mainStage);
+                sendInTheSaucer();
             }
         }
-
+        if (saucer != null) {
+            if (TimeUtils.timeSinceNanos(TimeUtils.timeSinceMillis(lastFireTime)) > 10_000_000L) {
+                saucer.shootAtPlayer(spaceship);
+                lastFireTime = TimeUtils.nanoTime();
+            }
+        }
     }
+
 
     @Override
     public boolean keyDown(int keycode) {
@@ -115,8 +125,7 @@ public class LevelScreen extends BaseScreen {
     }
 
     public void sendInTheSaucer() {
-        Saucer saucer = new Saucer(0, mainStage.getHeight() -100, mainStage);
-
+        saucer = new Saucer(0, mainStage.getHeight()-100, mainStage);
     }
 
     @Override

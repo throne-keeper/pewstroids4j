@@ -12,12 +12,12 @@ public class Saucer extends BaseActor {
 
     public Saucer(float x, float y, Stage stage) {
         super(x, y, stage);
-        loadTexture("ufo.png");
         addAction(Actions.moveBy(-2, 0, 1));
         setSpeed(50);
         setDeceleration(0);
         saucerSound = Gdx.audio.newSound(Gdx.files.internal("audio/ufo.mp3"));
         saucerSoundPlaying = false;
+        loadAnimation(new String[] { "ufo_move_1.png", "ufo_move_2.png" }, 0.25f, true);
     }
 
     @Override
@@ -28,6 +28,19 @@ public class Saucer extends BaseActor {
             saucerSoundPlaying = true;
             long id = saucerSound.play();
             saucerSound.setLooping(id, true);
+        }
+    }
+
+    public void shootAtPlayer(BaseActor player) {
+        float angle = (float) ((float) Math.atan2(
+                        player.getY() - this.getY(),
+                        player.getX() - this.getX()
+                ) * 180f / Math.PI);
+        if (getStage() != null) {
+            Beam beam = new Beam(0, 0, getStage(), "alien_beam.png");
+            beam.centerAtActor(this);
+            beam.setRotation(angle);
+            beam.setMotionAngle(angle);
         }
     }
 }
