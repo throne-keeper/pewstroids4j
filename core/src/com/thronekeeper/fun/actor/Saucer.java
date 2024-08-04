@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.thronekeeper.fun.config.ActorType;
 
 public class Saucer extends BaseActor {
 
@@ -32,15 +33,19 @@ public class Saucer extends BaseActor {
     }
 
     public void shootAtPlayer(BaseActor player) {
-        float angle = (float) ((float) Math.atan2(
-                        player.getY() - this.getY(),
-                        player.getX() - this.getX()
-                ) * 180f / Math.PI);
+        float angle = calculateAngle(player);
         if (getStage() != null) {
-            Beam beam = new Beam(0, 0, getStage(), "alien_beam.png");
+            Beam beam = new Beam(0, 0, getStage(), ActorType.COMPUTER);
             beam.centerAtActor(this);
             beam.setRotation(angle);
             beam.setMotionAngle(angle);
         }
+    }
+
+    private float calculateAngle(BaseActor player) {
+        float x = player.getX() - this.getX();
+        float y = player.getY() - this.getY();
+        return Double.valueOf(Math.atan2(y, x) * 180f / Math.PI)
+                .floatValue();
     }
 }

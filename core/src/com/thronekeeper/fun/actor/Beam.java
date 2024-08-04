@@ -1,32 +1,33 @@
 package com.thronekeeper.fun.actor;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.thronekeeper.fun.config.ActorType;
 
 public class Beam extends BaseActor {
 
-    public Beam(float x, float y, Stage stage, String image) {
-        super(x, y, stage);
-        loadTexture(image);
-        addAction(Actions.delay(1));
-        addAction(Actions.after(Actions.fadeOut(0.5f)));
-        addAction(Actions.after(Actions.removeActor()));
-        setSpeed(300);
-        setMaxSpeed(300);
-        setDeceleration(0);
-    }
+    private final ActorType owner;
 
-    public Beam(float x, float y, Stage stage) {
+    public Beam(float x, float y, Stage stage, ActorType owner) {
         super(x, y, stage);
-        loadTexture("beam2.png");
-        addAction(Actions.delay(1));
-        addAction(Actions.after(Actions.fadeOut(0.5f)));
-        addAction(Actions.after(Actions.removeActor()));
-        setSpeed(400);
-        setMaxSpeed(400);
-        setDeceleration(0);
+        this.owner = owner;
+        if (owner.equals(ActorType.PLAYER)) {
+            loadTexture("spaceship_beam.png");
+            addAction(Actions.delay(1));
+            addAction(Actions.after(Actions.fadeOut(0.5f)));
+            addAction(Actions.after(Actions.removeActor()));
+            setSpeed(300);
+            setMaxSpeed(300);
+            setDeceleration(0);
+        } else if (owner.equals(ActorType.COMPUTER)) {
+            loadTexture("beam2.png");
+            addAction(Actions.delay(2));
+            addAction(Actions.after(Actions.fadeOut(0.5f)));
+            addAction(Actions.after(Actions.removeActor()));
+            setSpeed(250);
+            setMaxSpeed(250);
+            setDeceleration(0);
+        }
     }
 
     @Override
@@ -34,5 +35,9 @@ public class Beam extends BaseActor {
         super.act(delta);
         applyPhysics(delta);
         wrapAroundWorld();
+    }
+
+    public ActorType getOwner() {
+        return owner;
     }
 }

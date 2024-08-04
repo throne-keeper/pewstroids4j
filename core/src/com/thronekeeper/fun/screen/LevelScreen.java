@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.thronekeeper.fun.actor.*;
+import com.thronekeeper.fun.config.ActorType;
 
 import java.sql.Time;
 
@@ -83,14 +84,25 @@ public class LevelScreen extends BaseScreen {
                 System.out.println("YOU LOSE. YOU'RE A LOSER");
             }
             for (BaseActor beam : BaseActor.getActors(mainStage, Beam.class)) {
-                if (beam.overlaps(asteroid)) {
+                Beam b = (Beam) beam;
+                if (b.getOwner().equals(ActorType.PLAYER) && (b.overlaps(asteroid))) {
                     Explosion boom = new Explosion(0, 0, mainStage);
                     explode.play();
                     boom.centerAtActor(asteroid);
                     asteroid.remove();
-                    beam.remove();
+                    b.remove();
                     score++;
                     scoreLabel.setText("Score: " + String.format(scoreTemplate, score));
+                } else if (b.overlaps(spaceship) && b.getOwner().equals(ActorType.COMPUTER)) {
+                    // TODO (vomit emoji) All duplicate code
+                    Explosion boom = new Explosion(0, 0, mainStage);
+                    boom.centerAtActor(spaceship);
+                    spaceship.remove();
+                    spaceship.setPosition(-1000, -1000);
+                    gameOver = true;
+                    explode.play();
+                    spaceship.remove();
+                    System.out.println("YOU LOSE. YOU'RE A LOSER");
                 }
             }
         }
@@ -104,7 +116,7 @@ public class LevelScreen extends BaseScreen {
             }
         }
         if (saucer != null) {
-            if (TimeUtils.timeSinceNanos(TimeUtils.timeSinceMillis(lastFireTime)) > 10_000_000L) {
+            if (TimeUtils.timeSinceNanos(lastFireTime) > 1_000_000_000L) {
                 saucer.shootAtPlayer(spaceship);
                 lastFireTime = TimeUtils.nanoTime();
             }

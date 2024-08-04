@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.thronekeeper.fun.config.ActorType;
 
 public class Spaceship extends BaseActor {
 
@@ -54,7 +55,7 @@ public class Spaceship extends BaseActor {
 
     public void shoot() {
         if (getStage() != null) {
-            Beam beam = new Beam(0, 0, getStage());
+            Beam beam = new Beam(0, 0, getStage(), ActorType.PLAYER);
             beam.centerAtActor(this);
             beam.setRotation(this.getRotation());
             beam.setMotionAngle(this.getRotation());
