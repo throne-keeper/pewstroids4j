@@ -9,10 +9,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.thronekeeper.fun.actor.*;
+import com.thronekeeper.fun.PewstroidsGame;
+import com.thronekeeper.fun.actor.Asteroid;
+import com.thronekeeper.fun.actor.BaseActor;
+import com.thronekeeper.fun.actor.Beam;
+import com.thronekeeper.fun.actor.Explosion;
+import com.thronekeeper.fun.actor.Saucer;
+import com.thronekeeper.fun.actor.Spaceship;
 import com.thronekeeper.fun.config.ActorType;
 
-import java.sql.Time;
 
 
 public class LevelScreen extends BaseScreen {
@@ -80,8 +85,7 @@ public class LevelScreen extends BaseScreen {
                 spaceship.setPosition(-1000, -1000);
                 gameOver = true;
                 explode.play();
-                spaceship.remove();
-                System.out.println("YOU LOSE. YOU'RE A LOSER");
+                gameOver();
             }
             for (BaseActor beam : BaseActor.getActors(mainStage, Beam.class)) {
                 Beam b = (Beam) beam;
@@ -101,14 +105,15 @@ public class LevelScreen extends BaseScreen {
                     spaceship.setPosition(-1000, -1000);
                     gameOver = true;
                     explode.play();
-                    spaceship.remove();
                     System.out.println("YOU LOSE. YOU'RE A LOSER");
+                    gameOver();
                 }
             }
         }
 
         if (!gameOver && BaseActor.getActors(mainStage, Asteroid.class).isEmpty()) {
             gameOver = true;
+            gameOver();
         }
         if (!gameOver && BaseActor.getActors(mainStage, Saucer.class).isEmpty()) {
             if (TimeUtils.timeSinceNanos(startTime) > 10_000_000_000L) {
@@ -138,6 +143,15 @@ public class LevelScreen extends BaseScreen {
 
     public void sendInTheSaucer() {
         saucer = new Saucer(0, mainStage.getHeight()-100, mainStage);
+    }
+
+    private void gameOver() {
+        if (saucer != null) {
+            saucer.remove();
+
+        }
+        PewstroidsGame.finalScore = score;
+        PewstroidsGame.setActiveScreen(new GameOverScreen());
     }
 
     @Override
@@ -197,6 +211,5 @@ public class LevelScreen extends BaseScreen {
 
     @Override
     public void dispose() {
-
     }
 }

@@ -48,4 +48,12 @@ public class Saucer extends BaseActor {
         return Double.valueOf(Math.atan2(y, x) * 180f / Math.PI)
                 .floatValue();
     }
+
+    @Override
+    public boolean remove() {
+        if (saucerSoundPlaying) {
+            saucerSound.stop();
+        }
+        return super.remove();
+    }
 }

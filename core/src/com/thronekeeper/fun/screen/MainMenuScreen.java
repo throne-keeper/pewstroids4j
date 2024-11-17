@@ -5,12 +5,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.thronekeeper.fun.PewstroidsGame;
 import com.thronekeeper.fun.actor.Asteroid;
 import com.thronekeeper.fun.actor.BaseActor;
+import com.thronekeeper.fun.util.FontFactory;
 
 
 public class MainMenuScreen extends BaseScreen {
@@ -32,16 +34,7 @@ public class MainMenuScreen extends BaseScreen {
         new Asteroid(300, 300, mainStage);
         new Asteroid(300, 600, mainStage);
 
-        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("anita.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter fontParameters = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        fontParameters.size = 48;
-        fontParameters.color = Color.WHITE;
-        fontParameters.borderWidth = 2;
-        fontParameters.borderColor = Color.BLACK;
-        fontParameters.borderStraight = true;
-        fontParameters.minFilter = Texture.TextureFilter.Linear;
-        fontParameters.magFilter = Texture.TextureFilter.Linear;
-        BitmapFont font = fontGenerator.generateFont(fontParameters);
+        BitmapFont font = FontFactory.createFont(Color.WHITE, Color.BLACK, 48, 2);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
         playLabel = new Label("1 COIN    1 PLAY", labelStyle);
         uiStage.addActor(playLabel);

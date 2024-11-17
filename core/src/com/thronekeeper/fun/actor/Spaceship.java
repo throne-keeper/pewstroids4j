@@ -62,6 +62,15 @@ public class Spaceship extends BaseActor {
         }
     }
 
+    @Override
+    public boolean remove() {
+        if (bzzPlaying) {
+            bzzPlaying = false;
+            bzz.stop();
+        }
+        return super.remove();
+    }
+
     public void warp() {
         // TODO Stub!
     }
