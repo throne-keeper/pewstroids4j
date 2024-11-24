@@ -45,7 +45,7 @@ public class BaseActor extends Group {
         velocityVector = new Vector2(0, 0); 
         accelerationVector = new Vector2(0, 0);
         acceleration = 0f;
-        maxSpeed = 1000;
+        maxSpeed = 1500;
         deceleration = 0f;
     }
 

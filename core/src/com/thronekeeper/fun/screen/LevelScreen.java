@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.thronekeeper.fun.PewstroidsGame;
 import com.thronekeeper.fun.actor.Asteroid;
@@ -17,7 +18,7 @@ import com.thronekeeper.fun.actor.Explosion;
 import com.thronekeeper.fun.actor.Saucer;
 import com.thronekeeper.fun.actor.Spaceship;
 import com.thronekeeper.fun.config.ActorType;
-
+import com.thronekeeper.fun.config.AsteroidType;
 
 
 public class LevelScreen extends BaseScreen {
@@ -33,8 +34,11 @@ public class LevelScreen extends BaseScreen {
     private int score;
     private long startTime;
     private Saucer saucer;
+    private int lives;
 
     private long lastFireTime;
+    private Array<Asteroid> smallAsteroids;
+    private Array<BaseActor> lifeLabels;
 
     @Override
     public void initialize() {
@@ -43,10 +47,10 @@ public class LevelScreen extends BaseScreen {
         space.loadTexture("space.jpg");
         BaseActor.setWorldBounds(space);
         spaceship = new Spaceship(400, 300, mainStage);
-        new Asteroid(600, 500, mainStage);
-        new Asteroid(600, 300, mainStage);
-        new Asteroid(300, 300, mainStage);
-        new Asteroid(300, 600, mainStage);
+        new Asteroid(600, 500, mainStage, "asteroid.png", AsteroidType.BIG);
+        new Asteroid(600, 300, mainStage, "asteroid.png", AsteroidType.BIG);
+        new Asteroid(300, 300, mainStage, "asteroid.png", AsteroidType.BIG);
+        new Asteroid(300, 600, mainStage, "asteroid.png", AsteroidType.BIG);
         gameOver = false;
         pewSound = Gdx.audio.newSound(Gdx.files.internal("audio/pew.mp3"));
         explode = Gdx.audio.newSound(Gdx.files.internal("audio/explode.mp3"));
@@ -55,6 +59,8 @@ public class LevelScreen extends BaseScreen {
         score = 0;
         startTime = TimeUtils.nanoTime();
         lastFireTime = TimeUtils.nanoTime();
+        lives = 4;
+        initializeLives();
     }
 
     private Label initializeScoreLabel() {
@@ -75,6 +81,21 @@ public class LevelScreen extends BaseScreen {
         return label;
     }
 
+    private void initializeLives() {
+        lifeLabels = new Array<>(lives);
+        float startingPos = 0f;
+        Texture texture = new Texture(Gdx.files.internal("spaceship.png"));
+        for (int i = 1; i <= lives; i++) {
+            BaseActor life = new BaseActor(startingPos, uiStage.getHeight() - texture.getHeight(), uiStage);
+            life.loadTexture("spaceship.png");
+            life.setRotation(90);
+            lifeLabels.add(life);
+            startingPos = texture.getWidth() * i;
+        }
+
+        lifeLabels.forEach(uiStage::addActor);
+    }
+
     @Override
     public void update(float delta) {
         for (BaseActor asteroid : BaseActor.getActors(mainStage, Asteroid.class)) {
@@ -85,18 +106,28 @@ public class LevelScreen extends BaseScreen {
                 spaceship.setPosition(-1000, -1000);
                 gameOver = true;
                 explode.play();
-                gameOver();
+                if (lives <= 0) {
+                    gameOver();
+                } else {
+                    lives--;
+                    initiateNewLife();
+                }
             }
             for (BaseActor beam : BaseActor.getActors(mainStage, Beam.class)) {
                 Beam b = (Beam) beam;
                 if (b.getOwner().equals(ActorType.PLAYER) && (b.overlaps(asteroid))) {
-                    Explosion boom = new Explosion(0, 0, mainStage);
-                    explode.play();
-                    boom.centerAtActor(asteroid);
-                    asteroid.remove();
-                    b.remove();
-                    score++;
-                    scoreLabel.setText("Score: " + String.format(scoreTemplate, score));
+                    if (asteroid instanceof Asteroid asteroidActor) {
+                        Explosion boom = new Explosion(0, 0, mainStage);
+                        explode.play();
+                        boom.centerAtActor(asteroid);
+                        asteroid.remove();
+                        b.remove();
+                        score++;
+                        scoreLabel.setText("Score: " + String.format(scoreTemplate, score));
+                        if (asteroidActor.getType().equals(AsteroidType.BIG)) {
+                            sendInAsteroidBits(asteroidActor);
+                        }
+                    }
                 } else if (b.overlaps(spaceship) && b.getOwner().equals(ActorType.COMPUTER)) {
                     // TODO (vomit emoji) All duplicate code
                     Explosion boom = new Explosion(0, 0, mainStage);
@@ -143,6 +174,19 @@ public class LevelScreen extends BaseScreen {
 
     public void sendInTheSaucer() {
         saucer = new Saucer(0, mainStage.getHeight()-100, mainStage);
+    }
+
+    private void sendInAsteroidBits(Asteroid asteroid) {
+        for (int i = 0; i < 4; i++) {
+            new Asteroid(asteroid.getX(), asteroid.getY(), mainStage, "smallasteroid.png", AsteroidType.SMALL);
+        }
+    }
+
+    private void initiateNewLife() {
+        BaseActor lifeToRemove = lifeLabels.get(lives-1);
+        lifeToRemove.remove();
+        initializeLives();
+        spaceship = new Spaceship(400, 300, mainStage);
     }
 
     private void gameOver() {

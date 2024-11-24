@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.thronekeeper.fun.PewstroidsGame;
 import com.thronekeeper.fun.actor.Asteroid;
 import com.thronekeeper.fun.actor.BaseActor;
+import com.thronekeeper.fun.config.AsteroidType;
 import com.thronekeeper.fun.util.FontFactory;
 
 
@@ -28,11 +29,12 @@ public class MainMenuScreen extends BaseScreen {
         BaseActor.setWorldBounds(space);
         mainStage.addActor(space);
 
-        new Asteroid(600, 500, mainStage);
-        new Asteroid(600, 500, mainStage);
-        new Asteroid(600, 300, mainStage);
-        new Asteroid(300, 300, mainStage);
-        new Asteroid(300, 600, mainStage);
+        new Asteroid(100, 500, mainStage, "asteroid.png", AsteroidType.BIG);
+        new Asteroid(200, 500, mainStage, "asteroid.png", AsteroidType.BIG);
+        new Asteroid(0, 500, mainStage, "smallasteroid.png", AsteroidType.SMALL);
+        new Asteroid(600, 500, mainStage, "asteroid.png", AsteroidType.BIG);
+        new Asteroid(150, 500, mainStage, "asteroid.png", AsteroidType.BIG);
+        new Asteroid(30, 500, mainStage, "smallasteroid.png", AsteroidType.SMALL);
 
         BitmapFont font = FontFactory.createFont(Color.WHITE, Color.BLACK, 48, 2);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
