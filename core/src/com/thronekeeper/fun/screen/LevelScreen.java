@@ -103,6 +103,7 @@ public class LevelScreen extends BaseScreen {
                 Explosion boom = new Explosion(0, 0, mainStage);
                 boom.centerAtActor(spaceship);
                 spaceship.remove();
+                removeLifeLabel();
                 spaceship.setPosition(-1000, -1000);
                 gameOver = true;
                 explode.play();
@@ -133,6 +134,8 @@ public class LevelScreen extends BaseScreen {
                     Explosion boom = new Explosion(0, 0, mainStage);
                     boom.centerAtActor(spaceship);
                     spaceship.remove();
+                    removeLifeLabel();
+                    initiateNewLife();
                     spaceship.setPosition(-1000, -1000);
                     gameOver = true;
                     explode.play();
@@ -183,10 +186,13 @@ public class LevelScreen extends BaseScreen {
     }
 
     private void initiateNewLife() {
-        BaseActor lifeToRemove = lifeLabels.get(lives-1);
-        lifeToRemove.remove();
-        initializeLives();
         spaceship = new Spaceship(400, 300, mainStage);
+    }
+
+    private void removeLifeLabel() {
+        if (!lifeLabels.isEmpty()) {
+            lifeLabels.pop().remove();
+        }
     }
 
     private void gameOver() {
