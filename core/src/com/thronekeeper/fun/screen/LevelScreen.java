@@ -26,6 +26,11 @@ import java.util.logging.Logger;
 public class LevelScreen extends BaseScreen {
 
     private static final Logger LOGGER = Logger.getLogger(LevelScreen.class.getName());
+    private static final String SPACE_RESOURCE = "space.jpg";
+    private static final String ASTEROID_RESOURCE = "asteroid.png";
+    private static final String PEW_SOUND_RESOURCE = "audio/pew.mp3";
+    private static final String EXPLODE_SOUND_RESOURCE = "audio/explode.mp3";
+    private static final String SPACESHIP = "spaceship.png";
 
     private Spaceship spaceship;
     private Sound pewSound;
@@ -49,16 +54,16 @@ public class LevelScreen extends BaseScreen {
     public void initialize() {
         BaseActor space = new BaseActor(0, 0, mainStage);
         space.setSize(1200, 720);
-        space.loadTexture("space.jpg");
+        space.loadTexture(SPACE_RESOURCE);
         BaseActor.setWorldBounds(space);
         spaceship = new Spaceship(400, 300, mainStage);
-        new Asteroid(600, 500, mainStage, "asteroid.png", AsteroidType.BIG);
-        new Asteroid(600, 300, mainStage, "asteroid.png", AsteroidType.BIG);
-        new Asteroid(300, 300, mainStage, "asteroid.png", AsteroidType.BIG);
-        new Asteroid(300, 600, mainStage, "asteroid.png", AsteroidType.BIG);
+        new Asteroid(600, 500, mainStage, ASTEROID_RESOURCE, AsteroidType.BIG);
+        new Asteroid(600, 300, mainStage, ASTEROID_RESOURCE, AsteroidType.BIG);
+        new Asteroid(300, 300, mainStage, ASTEROID_RESOURCE, AsteroidType.BIG);
+        new Asteroid(300, 600, mainStage, ASTEROID_RESOURCE, AsteroidType.BIG);
         gameOver = false;
-        pewSound = Gdx.audio.newSound(Gdx.files.internal("audio/pew.mp3"));
-        explode = Gdx.audio.newSound(Gdx.files.internal("audio/explode.mp3"));
+        pewSound = Gdx.audio.newSound(Gdx.files.internal(PEW_SOUND_RESOURCE));
+        explode = Gdx.audio.newSound(Gdx.files.internal(EXPLODE_SOUND_RESOURCE));
         scoreLabel = initializeScoreLabel();
         uiStage.addActor(scoreLabel);
         score = 0;
@@ -89,10 +94,10 @@ public class LevelScreen extends BaseScreen {
     private void initializeLives() {
         lifeLabels = new Array<>(lives);
         float startingPos = 0f;
-        Texture texture = new Texture(Gdx.files.internal("spaceship.png"));
+        Texture texture = new Texture(Gdx.files.internal(SPACESHIP));
         for (int i = 1; i <= lives; i++) {
             BaseActor life = new BaseActor(startingPos, uiStage.getHeight() - texture.getHeight(), uiStage);
-            life.loadTexture("spaceship.png");
+            life.loadTexture(SPACESHIP);
             life.setRotation(90);
             lifeLabels.add(life);
             startingPos = texture.getWidth() * (float) i;
