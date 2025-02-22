@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.thronekeeper.fun.BaseGame;
 import com.thronekeeper.fun.PewstroidsGame;
 import com.thronekeeper.fun.actor.BaseActor;
 import com.thronekeeper.fun.util.FontFactory;
@@ -43,7 +44,7 @@ public class GameOverScreen extends BaseScreen {
         playAgainButton.setPosition(exitGameButton.getX() - playAgainButton.getWidth(), mainStage.getHeight()/4);
         playAgainButton.addListener(event -> {
            if (event.toString().equals("touchDown")) {
-               PewstroidsGame.setActiveScreen(new LevelScreen());
+               BaseGame.setActiveScreen(new LevelScreen());
            }
            return false;
         });
@@ -53,11 +54,11 @@ public class GameOverScreen extends BaseScreen {
     }
 
     private float getLabelPositionWidth(Label label) {
-        return uiStage.getWidth() / 2 - label.getWidth() /2;
+        return uiStage.getWidth() / 2 - label.getWidth() / 2;
     }
 
     private float getLabelPositionHeight(Label label) {
-        return uiStage.getHeight()/2 - label.getHeight();
+        return uiStage.getHeight() / 2 - label.getHeight();
     }
 
     @Override
@@ -111,7 +112,7 @@ public class GameOverScreen extends BaseScreen {
     }
 
     @Override
-    public void resize(int width, int height) {5
+    public void resize(int width, int height) {
 
     }
 
