@@ -20,8 +20,12 @@ import com.thronekeeper.fun.actor.Spaceship;
 import com.thronekeeper.fun.config.ActorType;
 import com.thronekeeper.fun.config.AsteroidType;
 
+import java.util.logging.Logger;
+
 
 public class LevelScreen extends BaseScreen {
+
+    private static final Logger LOGGER = Logger.getLogger(LevelScreen.class.getName());
 
     private Spaceship spaceship;
     private Sound pewSound;
@@ -32,11 +36,12 @@ public class LevelScreen extends BaseScreen {
 
     private boolean gameOver;
     private int score;
-    private long startTime;
     private Saucer saucer;
     private int lives;
 
     private long lastFireTime;
+    private long lastSaucerSpawn;
+
     private Array<Asteroid> smallAsteroids;
     private Array<BaseActor> lifeLabels;
 
@@ -57,7 +62,7 @@ public class LevelScreen extends BaseScreen {
         scoreLabel = initializeScoreLabel();
         uiStage.addActor(scoreLabel);
         score = 0;
-        startTime = TimeUtils.nanoTime();
+        lastSaucerSpawn = TimeUtils.nanoTime();
         lastFireTime = TimeUtils.nanoTime();
         lives = 4;
         initializeLives();
@@ -90,7 +95,7 @@ public class LevelScreen extends BaseScreen {
             life.loadTexture("spaceship.png");
             life.setRotation(90);
             lifeLabels.add(life);
-            startingPos = texture.getWidth() * i;
+            startingPos = texture.getWidth() * (float) i;
         }
 
         lifeLabels.forEach(uiStage::addActor);
@@ -103,6 +108,7 @@ public class LevelScreen extends BaseScreen {
                 Explosion boom = new Explosion(0, 0, mainStage);
                 boom.centerAtActor(spaceship);
                 spaceship.remove();
+                removeLifeLabel();
                 spaceship.setPosition(-1000, -1000);
                 gameOver = true;
                 explode.play();
@@ -133,32 +139,51 @@ public class LevelScreen extends BaseScreen {
                     Explosion boom = new Explosion(0, 0, mainStage);
                     boom.centerAtActor(spaceship);
                     spaceship.remove();
+                    removeLifeLabel();
+                    initiateNewLife();
                     spaceship.setPosition(-1000, -1000);
-                    gameOver = true;
                     explode.play();
-                    System.out.println("YOU LOSE. YOU'RE A LOSER");
-                    gameOver();
+                    if (lives <= 0) {
+                        gameOver();
+                    } else {
+                        lives--;
+                        initiateNewLife();
+                    }
+                } else if (b.overlaps(saucer) && b.getOwner().equals(ActorType.PLAYER)) {
+                    Explosion boom = new Explosion(0, 0, mainStage);
+                    boom.centerAtActor(saucer);
+                    saucer.remove();
+                    explode.play();
+                    score++;
+                    scoreLabel.setText("Score: " + String.format(scoreTemplate, score));
+                    lastSaucerSpawn = TimeUtils.nanoTime();
+                    // TODO Add in custom animation animation
                 }
             }
         }
 
+        fireAtPlayer();
+        checkGameOver();
+    }
+
+    private void fireAtPlayer() {
+        if (saucer != null && TimeUtils.timeSinceNanos(lastFireTime) > 1_000_000_000L) {
+            saucer.shootAtPlayer(spaceship);
+            lastFireTime = TimeUtils.nanoTime();
+        }
+    }
+
+    private void checkGameOver() {
         if (!gameOver && BaseActor.getActors(mainStage, Asteroid.class).isEmpty()) {
             gameOver = true;
             gameOver();
         }
-        if (!gameOver && BaseActor.getActors(mainStage, Saucer.class).isEmpty()) {
-            if (TimeUtils.timeSinceNanos(startTime) > 10_000_000_000L) {
+        if (!gameOver && BaseActor.getActors(mainStage, Saucer.class).isEmpty()
+                && TimeUtils.timeSinceNanos(lastSaucerSpawn) > (10_000_000_000L)) {
+                LOGGER.info("Time Hit");
                 sendInTheSaucer();
-            }
-        }
-        if (saucer != null) {
-            if (TimeUtils.timeSinceNanos(lastFireTime) > 1_000_000_000L) {
-                saucer.shootAtPlayer(spaceship);
-                lastFireTime = TimeUtils.nanoTime();
-            }
         }
     }
-
 
     @Override
     public boolean keyDown(int keycode) {
@@ -183,10 +208,13 @@ public class LevelScreen extends BaseScreen {
     }
 
     private void initiateNewLife() {
-        BaseActor lifeToRemove = lifeLabels.get(lives-1);
-        lifeToRemove.remove();
-        initializeLives();
         spaceship = new Spaceship(400, 300, mainStage);
+    }
+
+    private void removeLifeLabel() {
+        if (!lifeLabels.isEmpty()) {
+            lifeLabels.pop().remove();
+        }
     }
 
     private void gameOver() {

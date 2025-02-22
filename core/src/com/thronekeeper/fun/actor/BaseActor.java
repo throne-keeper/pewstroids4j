@@ -231,8 +231,12 @@ public class BaseActor extends Group {
     }
 
     public boolean overlaps(BaseActor other) {
+        if (other == null) {
+            return false;
+        }
         Polygon me = this.getBoundaryPolygon();
         Polygon them = other.getBoundaryPolygon();
+
         if (!me.getBoundingRectangle().overlaps(them.getBoundingRectangle())) {
             return false;
         }

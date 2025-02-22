@@ -20,16 +20,6 @@ public class Asteroid extends BaseActor {
         setMotionAngle(MathUtils.random(360));
     }
 
-//    public Asteroid(float x, float y, Stage stage) {
-//        super(x, y, stage);
-//        loadTexture("asteroid.png");
-//        float random = MathUtils.random(30);
-//        addAction(Actions.forever(Actions.rotateBy(30 + random, 1)));
-//        setSpeed(50 + random);
-//        setDeceleration(0);
-//        setMotionAngle(MathUtils.random(360));
-//    }
-
     @Override
     public void act(float delta) {
         super.act(delta);
