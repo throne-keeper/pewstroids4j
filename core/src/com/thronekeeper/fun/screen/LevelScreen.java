@@ -32,6 +32,9 @@ public class LevelScreen extends BaseScreen {
     private static final String EXPLODE_SOUND_RESOURCE = "audio/explode.mp3";
     private static final String SPACESHIP = "spaceship.png";
 
+    private static final long INTERVAL = 5_000_000_000L; // 5 seconds I think??
+
+
     private Spaceship spaceship;
     private Sound pewSound;
     private Sound explode;
@@ -46,6 +49,7 @@ public class LevelScreen extends BaseScreen {
 
     private long lastFireTime;
     private long lastSaucerSpawn;
+    private long lastInvincibleInitiated;
 
     private Array<Asteroid> smallAsteroids;
     private Array<BaseActor> lifeLabels;
@@ -109,7 +113,7 @@ public class LevelScreen extends BaseScreen {
     @Override
     public void update(float delta) {
         for (BaseActor asteroid : BaseActor.getActors(mainStage, Asteroid.class)) {
-            if (asteroid.overlaps(spaceship)) {
+            if (asteroid.overlaps(spaceship) && !spaceship.isInvincible()) {
                 Explosion boom = new Explosion(0, 0, mainStage);
                 boom.centerAtActor(spaceship);
                 spaceship.remove();
@@ -136,7 +140,7 @@ public class LevelScreen extends BaseScreen {
                             sendInAsteroidBits(asteroidActor);
                         }
                     }
-                } else if (b.overlaps(spaceship) && b.getOwner().equals(ActorType.COMPUTER)) {
+                } else if (b.overlaps(spaceship) && b.getOwner().equals(ActorType.COMPUTER) && !spaceship.isInvincible()) {
                     b.remove();
                     explodeAndRemove(spaceship);
                     removeLifeLabel();
@@ -161,7 +165,34 @@ public class LevelScreen extends BaseScreen {
 
         fireAtPlayer();
         checkGameOver();
+        if (spaceship.isInvincible()) {
+            /*
+               Diane, add flashing animation for invincibility
+             */
+            updateInvincibility();
+        }
     }
+
+    private void initiateTemporaryInvincibility() {
+        if (!spaceship.isInvincible()) {
+            lastInvincibleInitiated = TimeUtils.nanoTime();
+            LOGGER.info("Player now has 5 second invincibility");
+            spaceship.setInvincible(true);
+        }
+    }
+
+    private void updateInvincibility() {
+        if (spaceship.isInvincible()) {
+            LOGGER.info("Player is invincible!");
+            if (TimeUtils.timeSinceNanos(lastInvincibleInitiated) > INTERVAL) {
+                spaceship.setInvincible(false);
+                LOGGER.info("Player is no longer invincible");
+            } else {
+                LOGGER.info("Player is still invincible!");
+            }
+        }
+    }
+
 
     private void explodeAndRemove(BaseActor actor) {
         Explosion explosion = new Explosion(0, 0, mainStage);
@@ -213,6 +244,7 @@ public class LevelScreen extends BaseScreen {
 
     private void initiateNewLife() {
         spaceship = new Spaceship(400, 300, mainStage);
+        initiateTemporaryInvincibility();
     }
 
     private void removeLifeLabel() {

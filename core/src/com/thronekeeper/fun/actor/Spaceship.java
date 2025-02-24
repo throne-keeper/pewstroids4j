@@ -10,6 +10,7 @@ public class Spaceship extends BaseActor {
 
     private final Thrusters thrusters;
     private final Sound bzz;
+    private boolean invincible;
 
     private boolean bzzPlaying;
 
@@ -73,5 +74,13 @@ public class Spaceship extends BaseActor {
 
     public void warp() {
         // TODO Stub!
+    }
+
+    public boolean isInvincible() {
+        return invincible;
+    }
+
+    public void setInvincible(boolean invincible) {
+        this.invincible = invincible;
     }
 }
