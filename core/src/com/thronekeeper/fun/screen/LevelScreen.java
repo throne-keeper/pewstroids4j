@@ -128,11 +128,8 @@ public class LevelScreen extends BaseScreen {
                 Beam b = (Beam) beam;
                 if (b.getOwner().equals(ActorType.PLAYER) && (b.overlaps(asteroid))) {
                     if (asteroid instanceof Asteroid asteroidActor) {
-                        Explosion boom = new Explosion(0, 0, mainStage);
-                        explode.play();
-                        boom.centerAtActor(asteroid);
-                        asteroid.remove();
                         b.remove();
+                        explodeAndRemove(asteroidActor);
                         score++;
                         scoreLabel.setText("Score: " + String.format(scoreTemplate, score));
                         if (asteroidActor.getType().equals(AsteroidType.BIG)) {
@@ -140,14 +137,11 @@ public class LevelScreen extends BaseScreen {
                         }
                     }
                 } else if (b.overlaps(spaceship) && b.getOwner().equals(ActorType.COMPUTER)) {
-                    // TODO (vomit emoji) All duplicate code
-                    Explosion boom = new Explosion(0, 0, mainStage);
-                    boom.centerAtActor(spaceship);
-                    spaceship.remove();
+                    b.remove();
+                    explodeAndRemove(spaceship);
                     removeLifeLabel();
                     initiateNewLife();
                     spaceship.setPosition(-1000, -1000);
-                    explode.play();
                     if (lives <= 0) {
                         gameOver();
                     } else {
@@ -155,10 +149,8 @@ public class LevelScreen extends BaseScreen {
                         initiateNewLife();
                     }
                 } else if (b.overlaps(saucer) && b.getOwner().equals(ActorType.PLAYER)) {
-                    Explosion boom = new Explosion(0, 0, mainStage);
-                    boom.centerAtActor(saucer);
-                    saucer.remove();
-                    explode.play();
+                    b.remove();
+                    explodeAndRemove(saucer);
                     score++;
                     scoreLabel.setText("Score: " + String.format(scoreTemplate, score));
                     lastSaucerSpawn = TimeUtils.nanoTime();
@@ -169,6 +161,13 @@ public class LevelScreen extends BaseScreen {
 
         fireAtPlayer();
         checkGameOver();
+    }
+
+    private void explodeAndRemove(BaseActor actor) {
+        Explosion explosion = new Explosion(0, 0, mainStage);
+        explosion.centerAtActor(actor);
+        actor.remove();
+        explode.play();
     }
 
     private void fireAtPlayer() {
