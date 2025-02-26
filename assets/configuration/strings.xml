@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string type="image">space.jpg</string>
+    <string type="image">asteroid.jpg</string>
+    <string type="image">saucer.png</string>
+    <string type="image">spaceship.png</string>
+    <string type="audio">audio/pew.mp3</string>
+    <string type="audio">audio/explode.mp3</string>
+</resources>
