@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.thronekeeper.fun.config.ActorType;
+import com.thronekeeper.fun.config.Resource;
 
 public class Saucer extends BaseActor {
 
@@ -16,9 +17,9 @@ public class Saucer extends BaseActor {
         addAction(Actions.moveBy(-2, 0, 1));
         setSpeed(50);
         setDeceleration(0);
-        saucerSound = Gdx.audio.newSound(Gdx.files.internal("audio/ufo.mp3"));
+        saucerSound = Gdx.audio.newSound(Gdx.files.internal(Resource.UFO_SOUND));
         saucerSoundPlaying = false;
-        loadAnimation(new String[] { "ufo_move_1.png", "ufo_move_2.png" }, 0.25f, true);
+        loadAnimation(Resource.UFO_ANIMATION, 0.25f, true);
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.thronekeeper.fun.PewstroidsGame;
 import com.thronekeeper.fun.actor.Asteroid;
 import com.thronekeeper.fun.actor.BaseActor;
 import com.thronekeeper.fun.config.AsteroidType;
+import com.thronekeeper.fun.config.Resource;
 import com.thronekeeper.fun.util.FontFactory;
 
 
@@ -22,16 +23,16 @@ public class MainMenuScreen extends BaseScreen {
     public void initialize() {
         BaseActor space = new BaseActor(0, 0, mainStage);
         space.setSize(1200, 720);
-        space.loadTexture("space.jpg");
+        space.loadTexture(Resource.SPACE_BACKGROUND);
         BaseActor.setWorldBounds(space);
         mainStage.addActor(space);
 
-        new Asteroid(100, 500, mainStage, "asteroid.png", AsteroidType.BIG);
-        new Asteroid(200, 500, mainStage, "asteroid.png", AsteroidType.BIG);
-        new Asteroid(0, 500, mainStage, "smallasteroid.png", AsteroidType.SMALL);
-        new Asteroid(600, 500, mainStage, "asteroid.png", AsteroidType.BIG);
-        new Asteroid(150, 500, mainStage, "asteroid.png", AsteroidType.BIG);
-        new Asteroid(30, 500, mainStage, "smallasteroid.png", AsteroidType.SMALL);
+        new Asteroid(100, 500, mainStage, Resource.ASTEROID, AsteroidType.BIG);
+        new Asteroid(200, 500, mainStage, Resource.ASTEROID, AsteroidType.BIG);
+        new Asteroid(0, 500, mainStage, Resource.ASTEROID_BIT, AsteroidType.SMALL);
+        new Asteroid(600, 500, mainStage, Resource.ASTEROID, AsteroidType.BIG);
+        new Asteroid(150, 500, mainStage, Resource.ASTEROID, AsteroidType.BIG);
+        new Asteroid(30, 500, mainStage, Resource.ASTEROID_BIT, AsteroidType.SMALL);
 
         BitmapFont font = FontFactory.createFont(Color.WHITE, Color.BLACK, 48, 2);
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);

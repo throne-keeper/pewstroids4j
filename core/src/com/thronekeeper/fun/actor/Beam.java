@@ -3,6 +3,7 @@ package com.thronekeeper.fun.actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.thronekeeper.fun.config.ActorType;
+import com.thronekeeper.fun.config.Resource;
 
 public class Beam extends BaseActor {
 
@@ -12,7 +13,7 @@ public class Beam extends BaseActor {
         super(x, y, stage);
         this.owner = owner;
         if (owner.equals(ActorType.PLAYER)) {
-            loadTexture("spaceship_beam.png");
+            loadTexture(Resource.SPACESHIP_BEAM);
             addAction(Actions.delay(1));
             addAction(Actions.after(Actions.fadeOut(0.5f)));
             addAction(Actions.after(Actions.removeActor()));
@@ -20,7 +21,7 @@ public class Beam extends BaseActor {
             setMaxSpeed(300);
             setDeceleration(0);
         } else if (owner.equals(ActorType.COMPUTER)) {
-            loadTexture("beam2.png");
+            loadTexture(Resource.EVIL_BEAM);
             addAction(Actions.delay(2));
             addAction(Actions.after(Actions.fadeOut(0.5f)));
             addAction(Actions.after(Actions.removeActor()));

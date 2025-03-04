@@ -19,18 +19,20 @@ import com.thronekeeper.fun.actor.Saucer;
 import com.thronekeeper.fun.actor.Spaceship;
 import com.thronekeeper.fun.config.ActorType;
 import com.thronekeeper.fun.config.AsteroidType;
+import com.thronekeeper.fun.config.Resource;
 
+import javax.print.DocFlavor;
 import java.util.logging.Logger;
 
 
 public class LevelScreen extends BaseScreen {
 
     private static final Logger LOGGER = Logger.getLogger(LevelScreen.class.getName());
-    private static final String SPACE_RESOURCE = "space.jpg";
-    private static final String ASTEROID_RESOURCE = "asteroid.png";
-    private static final String PEW_SOUND_RESOURCE = "audio/pew.mp3";
-    private static final String EXPLODE_SOUND_RESOURCE = "audio/explode.mp3";
-    private static final String SPACESHIP = "spaceship.png";
+//    private static final String SPACE_RESOURCE = "space.jpg";
+//    private static final String ASTEROID_RESOURCE = "asteroid.png";
+//    private static final String PEW_SOUND_RESOURCE = "audio/pew.mp3";
+//    private static final String EXPLODE_SOUND_RESOURCE = "audio/explode.mp3";
+//    private static final String SPACESHIP = "spaceship_1.png";
 
     private static final long INTERVAL = 5_000_000_000L; // 5 seconds I think??
 
@@ -58,16 +60,16 @@ public class LevelScreen extends BaseScreen {
     public void initialize() {
         BaseActor space = new BaseActor(0, 0, mainStage);
         space.setSize(1200, 720);
-        space.loadTexture(SPACE_RESOURCE);
+        space.loadTexture(Resource.SPACE_BACKGROUND);
         BaseActor.setWorldBounds(space);
         spaceship = new Spaceship(400, 300, mainStage);
-        new Asteroid(600, 500, mainStage, ASTEROID_RESOURCE, AsteroidType.BIG);
-        new Asteroid(600, 300, mainStage, ASTEROID_RESOURCE, AsteroidType.BIG);
-        new Asteroid(300, 300, mainStage, ASTEROID_RESOURCE, AsteroidType.BIG);
-        new Asteroid(300, 600, mainStage, ASTEROID_RESOURCE, AsteroidType.BIG);
+        new Asteroid(600, 500, mainStage, Resource.ASTEROID, AsteroidType.BIG);
+        new Asteroid(600, 300, mainStage, Resource.ASTEROID, AsteroidType.BIG);
+        new Asteroid(300, 300, mainStage, Resource.ASTEROID, AsteroidType.BIG);
+        new Asteroid(300, 600, mainStage, Resource.ASTEROID, AsteroidType.BIG);
         gameOver = false;
-        pewSound = Gdx.audio.newSound(Gdx.files.internal(PEW_SOUND_RESOURCE));
-        explode = Gdx.audio.newSound(Gdx.files.internal(EXPLODE_SOUND_RESOURCE));
+        pewSound = Gdx.audio.newSound(Gdx.files.internal(Resource.PEW));
+        explode = Gdx.audio.newSound(Gdx.files.internal(Resource.EXPLODE));
         scoreLabel = initializeScoreLabel();
         uiStage.addActor(scoreLabel);
         score = 0;
@@ -98,10 +100,10 @@ public class LevelScreen extends BaseScreen {
     private void initializeLives() {
         lifeLabels = new Array<>(lives);
         float startingPos = 0f;
-        Texture texture = new Texture(Gdx.files.internal(SPACESHIP));
+        Texture texture = new Texture(Gdx.files.internal(Resource.SPACESHIP));
         for (int i = 1; i <= lives; i++) {
             BaseActor life = new BaseActor(startingPos, uiStage.getHeight() - texture.getHeight(), uiStage);
-            life.loadTexture(SPACESHIP);
+            life.loadTexture(Resource.SPACESHIP);
             life.setRotation(90);
             lifeLabels.add(life);
             startingPos = texture.getWidth() * (float) i;

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.thronekeeper.fun.config.ActorType;
+import com.thronekeeper.fun.config.Resource;
 
 public class Spaceship extends BaseActor {
 
@@ -16,13 +17,13 @@ public class Spaceship extends BaseActor {
 
     public Spaceship(float x, float y, Stage stage) {
         super(x, y, stage);
-        loadTexture("spaceship.png");
+        loadTexture(Resource.SPACESHIP);
         setBoundaryPolygon(8);
         setAcceleration(200);
         setMaxSpeed(100);
         setDeceleration(10);
         thrusters = new Thrusters(0, 0, stage);
-        bzz = Gdx.audio.newSound(Gdx.files.internal("audio/bzz.mp3"));
+        bzz = Gdx.audio.newSound(Gdx.files.internal(Resource.BZZ));
         addActor(thrusters);
         thrusters.setPosition(-thrusters.getWidth(), getHeight()/2 - thrusters.getHeight()/2);
     }

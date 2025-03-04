@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string type="image">space.jpg</string>
-    <string type="image">asteroid.jpg</string>
-    <string type="image">saucer.png</string>
-    <string type="image">spaceship.png</string>
-    <string type="audio">audio/pew.mp3</string>
-    <string type="audio">audio/explode.mp3</string>
+    <string name="SPACE_BACKGROUND">space.jpg</string>
+    <string name="ASTEROID">asteroid.jpg</string>
+    <string name="SAUCER">saucer.png</string>
+    <string name="SPACESHIP">spaceship.png</string>
+    <string name="PEW_SOUND">audio/pew.mp3</string>
+    <string name="EXPLODE">audio/explode.mp3</string>
 </resources>
