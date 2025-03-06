@@ -28,12 +28,6 @@ import java.util.logging.Logger;
 public class LevelScreen extends BaseScreen {
 
     private static final Logger LOGGER = Logger.getLogger(LevelScreen.class.getName());
-//    private static final String SPACE_RESOURCE = "space.jpg";
-//    private static final String ASTEROID_RESOURCE = "asteroid.png";
-//    private static final String PEW_SOUND_RESOURCE = "audio/pew.mp3";
-//    private static final String EXPLODE_SOUND_RESOURCE = "audio/explode.mp3";
-//    private static final String SPACESHIP = "spaceship_1.png";
-
     private static final long INTERVAL = 5_000_000_000L; // 5 seconds I think??
 
 
@@ -68,8 +62,8 @@ public class LevelScreen extends BaseScreen {
         new Asteroid(300, 300, mainStage, Resource.ASTEROID, AsteroidType.BIG);
         new Asteroid(300, 600, mainStage, Resource.ASTEROID, AsteroidType.BIG);
         gameOver = false;
-        pewSound = Gdx.audio.newSound(Gdx.files.internal(Resource.PEW));
-        explode = Gdx.audio.newSound(Gdx.files.internal(Resource.EXPLODE));
+        pewSound = Gdx.audio.newSound(Gdx.files.internal(Resource.PEW_SOUND));
+        explode = Gdx.audio.newSound(Gdx.files.internal(Resource.EXPLODE_SOUND));
         scoreLabel = initializeScoreLabel();
         uiStage.addActor(scoreLabel);
         score = 0;

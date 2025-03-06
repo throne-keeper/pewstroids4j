@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="SPACE_BACKGROUND">space.jpg</string>
-    <string name="ASTEROID">asteroid.jpg</string>
+    <string name="ASTEROID">asteroid.png</string>
+    <string name="ASTEROID_BIT">smallasteroid.png</string>
     <string name="SAUCER">saucer.png</string>
-    <string name="SPACESHIP">spaceship.png</string>
+    <string name="SPACESHIP">spaceship_1.png</string>
+    <string name="SPACESHIP_BEAM">spaceship_beam.png</string>
+    <string name="EVIL_BEAM">beam2.png</string>
     <string name="PEW_SOUND">audio/pew.mp3</string>
-    <string name="EXPLODE">audio/explode.mp3</string>
+    <string name="BZZ_SOUND">audio/bzz.mp3</string>
+    <string name="UFO_SOUND">audio/ufo.mp3</string>
+    <string name="EXPLODE_SOUND">audio/explode.mp3</string>
 </resources>

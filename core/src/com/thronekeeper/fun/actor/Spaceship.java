@@ -23,7 +23,7 @@ public class Spaceship extends BaseActor {
         setMaxSpeed(100);
         setDeceleration(10);
         thrusters = new Thrusters(0, 0, stage);
-        bzz = Gdx.audio.newSound(Gdx.files.internal(Resource.BZZ));
+        bzz = Gdx.audio.newSound(Gdx.files.internal(Resource.BZZ_SOUND));
         addActor(thrusters);
         thrusters.setPosition(-thrusters.getWidth(), getHeight()/2 - thrusters.getHeight()/2);
     }

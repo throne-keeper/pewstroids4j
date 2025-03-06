@@ -49,7 +49,6 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        
     }
 }
 
@@ -63,5 +62,7 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation 'com.h2database:h2:2.3.232'
         implementation 'org.hibernate:hibernate-gradle-plugin:5.6.15.Final'
+        implementation 'com.fasterxml.jackson.core:jackson-core:2.18.3'
+        implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.18.3'
     }
 }

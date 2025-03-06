@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.thronekeeper.fun.BaseGame;
 import com.thronekeeper.fun.PewstroidsGame;
 import com.thronekeeper.fun.actor.BaseActor;
-import com.thronekeeper.fun.config.Resource;
 import com.thronekeeper.fun.util.FontFactory;
 
 public class GameOverScreen extends BaseScreen {
@@ -22,7 +21,7 @@ public class GameOverScreen extends BaseScreen {
     public void initialize() {
         BaseActor space = new BaseActor(0, 0, mainStage);
         space.setSize(1200, 720);
-        space.loadTexture(Resource.SPACE_BACKGROUND);
+        space.loadTexture(SPACE_BACKGROUND);
         BaseActor.setWorldBounds(space);
         mainStage.addActor(space);
         BitmapFont font = FontFactory.createDefaultFont();

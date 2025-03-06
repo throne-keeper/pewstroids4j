@@ -9,8 +9,16 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.thronekeeper.fun.config.Resource;
 
 public abstract class BaseScreen implements Screen, InputProcessor {
+
+    protected static final String SPACESHIP = Resource.get("SPACESHIP");
+    protected static final String ASTEROID = Resource.get("ASTEROID");
+    protected static final String SPACE_BACKGROUND = Resource.get("SPACE_BACKGROUND");
+    protected static final String SAUCER = Resource.get("SAUCER");
+    protected static final String PEW_SOUND = Resource.get("PEW_SOUND");
+    protected static final String EXPLODE = Resource.get("EXPLODE");
 
     protected Stage mainStage;
     protected Stage uiStage;
