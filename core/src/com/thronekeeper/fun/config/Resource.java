@@ -40,6 +40,7 @@ public class Resource {
 
     static {
         initializeMap();
+        initializeArrayMap();
         SPACESHIP = configurationMap.get("SPACESHIP");
         SPACE_BACKGROUND = configurationMap.get("SPACE_BACKGROUND");
         SAUCER = configurationMap.get("SAUCER");
@@ -78,29 +79,32 @@ public class Resource {
         }
     }
 
+    // TODO WIP
+//    private static void initializeArrayMap() {
+//        try {
+//            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newDefaultInstance();
+//            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+//            Document document = documentBuilder.parse("configuration/strings.xml");
+//            document.getDocumentElement().normalize();
+//
+//            Node resource = document.getElementsByTagName("resources").item(0);
+//            NodeList nodeList = resource.getChildNodes();
+//            for (int i = 0; i < nodeList.getLength(); i++) {
+//                Node currentNode = nodeList.item(i);
+//                if (currentNode instanceof Element element) {
+//                    if (element.getNodeName().equals("animations")) {
+//                        LOGGER.info("Len: " + element.getAttributes().getLength());
+//                    }
+//                    LOGGER.info("TagName: " + element.getTagName());
+//                    LOGGER.info("NodeName: " + element.getNodeName());
+//                }
+//            }
+//        } catch (ParserConfigurationException | SAXException | IOException e) {
+//
+//        }
+//    }
+
     public static String get(String key) {
         return configurationMap.get(key);
     }
-
-
-//    private Resource() {
-//        ObjectMapper xmlMapper;
-//    }
-//
-//    public static final String SPACE_BACKGROUND = "space.jpg";
-//    public static final String SPACESHIP = "spaceship.png";
-//    public static final String ASTEROID = "asteroid.png";
-//    public static final String ASTEROID_BIT = "smallasteroid.png";
-//    public static final String SAUCER = "saucer.png";
-//    public static final String SPACESHIP_BEAM = "spaceship_beam.png";
-//    public static final String EVIL_BEAM = "beam2.png";
-//
-//    public static final String PEW = "audio/pew.mp3";
-//    public static final String EXPLODE = "audio/explode.mp3";
-//    public static final String UFO_SOUND = "audio/ufo.mp3";
-//    public static final String BZZ = "audio/bzz.mp3";
-//
-//    public static final String[] KABOOM_ANIMATION = { "kaboom1.png", "kaboom2.png", "kaboom3.png" };
-//    public static final String[] UFO_ANIMATION = { "ufo_move_1.png", "ufo_move_2.png" };
-
 }

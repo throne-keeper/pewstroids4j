@@ -11,4 +11,15 @@
     <string name="BZZ_SOUND">audio/bzz.mp3</string>
     <string name="UFO_SOUND">audio/ufo.mp3</string>
     <string name="EXPLODE_SOUND">audio/explode.mp3</string>
+    <animations>
+        <animation name="UFO_ANIMATION">
+            <string>ufo_move_1.png</string>
+            <string>ufo_move_2.png</string>
+        </animation>
+        <animation name="KABOOM_ANIMATION">
+            <string>kaboom1.png</string>
+            <string>kaboom2.png</string>
+            <string>kaboom3.png</string>
+        </animation>
+    </animations>
 </resources>
