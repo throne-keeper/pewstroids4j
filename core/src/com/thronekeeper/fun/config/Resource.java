@@ -40,7 +40,7 @@ public class Resource {
 
     static {
         initializeMap();
-        initializeArrayMap();
+//        initializeArrayMap();
         SPACESHIP = configurationMap.get("SPACESHIP");
         SPACE_BACKGROUND = configurationMap.get("SPACE_BACKGROUND");
         SAUCER = configurationMap.get("SAUCER");

@@ -10,12 +10,24 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.thronekeeper.fun.BaseGame;
 import com.thronekeeper.fun.PewstroidsGame;
 import com.thronekeeper.fun.actor.BaseActor;
+import com.thronekeeper.fun.persistence.Score;
+import com.thronekeeper.fun.persistence.ScoreContainer;
+import com.thronekeeper.fun.persistence.ScoreUtil;
 import com.thronekeeper.fun.util.FontFactory;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class GameOverScreen extends BaseScreen {
 
+
     private Button playAgainButton;
     private Button exitGameButton;
+
+    public GameOverScreen() {
+    }
 
     @Override
     public void initialize() {
@@ -30,7 +42,6 @@ public class GameOverScreen extends BaseScreen {
         uiStage.addActor(gameOverLabel);
         gameOverLabel.setPosition(getLabelPositionWidth(gameOverLabel), getLabelPositionHeight(gameOverLabel));
         Skin skin = new Skin(Gdx.files.internal("skins/holo/skin/dark-hdpi/Holo-dark-hdpi.json"));
-
         exitGameButton = new TextButton("Exit", skin, "default");
         exitGameButton.setPosition(mainStage.getWidth()/2, mainStage.getHeight()/4);
         exitGameButton.addListener(event -> {
@@ -51,6 +62,18 @@ public class GameOverScreen extends BaseScreen {
 
         mainStage.addActor(exitGameButton);
         mainStage.addActor(playAgainButton);
+        recordScore();
+    }
+
+    private void recordScore() {
+        List<String> names = Arrays.asList("Kevin", "Jeff", "Matt", "Jennifer", "Amanda", "Erika");
+        Collections.shuffle(names);
+        ScoreContainer scoreContainer = ScoreUtil.deserializeScores();
+        Score score = new Score(names.get(0), PewstroidsGame.finalScore, LocalDateTime.now());
+        if (scoreContainer != null) {
+            scoreContainer.addScore(score);
+            ScoreUtil.serializeScores(scoreContainer);
+        }
     }
 
     private float getLabelPositionWidth(Label label) {

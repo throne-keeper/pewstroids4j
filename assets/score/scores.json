@@ -1,0 +1,34 @@
+{
+  "scores": [
+    {
+      "name": "Matt",
+      "recordedScore": 45,
+      "datePlayed": 20250427130859
+    },
+    {
+      "name": "Nate",
+      "recordedScore": 11,
+      "datePlayed": 20250424130859
+    },
+    {
+      "name": "Kevin",
+      "recordedScore": 4,
+      "datePlayed": 20250318154445
+    },
+    {
+      "name": "Matt",
+      "recordedScore": 7,
+      "datePlayed": 20250427160714
+    },
+    {
+      "name": "Jeff",
+      "recordedScore": 9,
+      "datePlayed": 20250427160830
+    },
+    {
+      "name": "Amanda",
+      "recordedScore": 6,
+      "datePlayed": 20250427161205
+    }
+  ]
+}
