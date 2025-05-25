@@ -10,6 +10,7 @@ import com.thronekeeper.fun.config.Resource;
 public class Spaceship extends BaseActor {
 
     private final Thrusters thrusters;
+    private final Forcefield forcefield;
     private final Sound bzz;
     private boolean invincible;
 
@@ -23,9 +24,12 @@ public class Spaceship extends BaseActor {
         setMaxSpeed(100);
         setDeceleration(10);
         thrusters = new Thrusters(0, 0, stage);
+        forcefield = new Forcefield(0, 0, stage);
         bzz = Gdx.audio.newSound(Gdx.files.internal(Resource.BZZ_SOUND));
         addActor(thrusters);
         thrusters.setPosition(-thrusters.getWidth(), getHeight()/2 - thrusters.getHeight()/2);
+        addActor(forcefield);
+        forcefield.setVisible(false);
     }
 
     @Override
@@ -43,7 +47,7 @@ public class Spaceship extends BaseActor {
             thrusters.setVisible(true);
             if (!bzzPlaying) {
                 bzzPlaying = true;
-                var id = bzz.play();
+                long id = bzz.play();
                 bzz.setLooping(id, true);
             }
         } else {
@@ -82,6 +86,13 @@ public class Spaceship extends BaseActor {
     }
 
     public void setInvincible(boolean invincible) {
+        if (invincible) {
+            if (!forcefield.isVisible()) {
+                forcefield.setVisible(true);
+            }
+        } else {
+            forcefield.setVisible(false);
+        }
         this.invincible = invincible;
     }
 }
