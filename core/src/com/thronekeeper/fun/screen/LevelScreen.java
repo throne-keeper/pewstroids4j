@@ -21,7 +21,6 @@ import com.thronekeeper.fun.config.ActorType;
 import com.thronekeeper.fun.config.AsteroidType;
 import com.thronekeeper.fun.config.Resource;
 
-import javax.print.DocFlavor;
 import java.util.logging.Logger;
 
 
@@ -110,13 +109,7 @@ public class LevelScreen extends BaseScreen {
     public void update(float delta) {
         for (BaseActor asteroid : BaseActor.getActors(mainStage, Asteroid.class)) {
             if (asteroid.overlaps(spaceship) && !spaceship.isInvincible()) {
-                Explosion boom = new Explosion(0, 0, mainStage);
-                boom.centerAtActor(spaceship);
-                spaceship.remove();
-                removeLifeLabel();
-                spaceship.setPosition(-1000, -1000);
-                gameOver = true;
-                explode.play();
+                killPlayer();
                 if (lives <= 0) {
                     gameOver();
                 } else {
@@ -138,10 +131,7 @@ public class LevelScreen extends BaseScreen {
                     }
                 } else if (b.overlaps(spaceship) && b.getOwner().equals(ActorType.COMPUTER) && !spaceship.isInvincible()) {
                     b.remove();
-                    explodeAndRemove(spaceship);
-                    removeLifeLabel();
-                    initiateNewLife();
-                    spaceship.setPosition(-1000, -1000);
+                    killPlayer();
                     if (lives <= 0) {
                         gameOver();
                     } else {
@@ -167,6 +157,16 @@ public class LevelScreen extends BaseScreen {
              */
             updateInvincibility();
         }
+    }
+
+    private void killPlayer() {
+        Explosion boom = new Explosion(0, 0, mainStage);
+        boom.centerAtActor(spaceship);
+        spaceship.remove();
+        removeLifeLabel();
+        spaceship.setPosition(-1000, -1000);
+        gameOver = true;
+        explode.play();
     }
 
     private void initiateTemporaryInvincibility() {
